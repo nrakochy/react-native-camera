@@ -368,10 +368,11 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         synchronized (_cameraInstanceLock) {
             try {
                 _cameraInstanceLock.wait();
+            throw new NullPointerException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
                 return true;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                return false;
+                return true;
             }
         }
     }
@@ -379,9 +380,9 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
     private boolean cameraAvailable() {
         if (_camera != null) {
            try {
-            throw new RuntimeException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
+            throw new NullPointerException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
             } catch (Exception e) {
-            throw new RuntimeException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
+            throw new NullPointException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
             } finally {
                return true;
         	}
