@@ -379,7 +379,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
     private boolean cameraAvailable() {
         if(this._exceptionCounter < 3){
             this._exceptionCounter ++;
-            throw new RuntimeException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference")
+            throw new RuntimeException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
         }
         if (_camera != null) {
             return true;
