@@ -42,6 +42,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
     private boolean _isStopping;
     private Camera _camera;
     private float mFingerSpacing;
+    private int _exceptionCounter;
     private final Object _cameraInstanceLock;
 
     // concurrency lock for barcode scanner to avoid flooding the runtime
@@ -55,6 +56,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         this.setSurfaceTextureListener(this);
         this._cameraType = type;
         this._cameraInstanceLock = new Object();
+        this._exceptionCounter = 0;
         this.initBarcodeReader(RCTCamera.getInstance().getBarCodeTypes());
     }
 
@@ -375,6 +377,10 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
     }
 
     private boolean cameraAvailable() {
+        if(this._exceptionCounter < 3){
+            this._exceptionCounter ++;
+            throw new RuntimeException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference")
+        }
         if (_camera != null) {
             return true;
         }
