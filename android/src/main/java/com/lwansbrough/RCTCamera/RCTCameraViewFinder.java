@@ -368,11 +368,10 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         synchronized (_cameraInstanceLock) {
             try {
                 _cameraInstanceLock.wait();
-            throw new NullPointerException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
                 return true;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                return true;
+                return false;
             }
         }
     }
