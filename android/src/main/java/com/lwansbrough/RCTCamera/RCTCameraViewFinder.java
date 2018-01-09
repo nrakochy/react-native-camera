@@ -72,7 +72,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         _surfaceTexture = surface;
         _surfaceTextureWidth = width;
         _surfaceTextureHeight = height;
-        this.dispatchEvent(mEvent);
+        this.dispatchTouchEvent(mEvent);
         startCamera();
     }
 
