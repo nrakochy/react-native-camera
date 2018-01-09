@@ -42,8 +42,16 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
     private boolean _isStopping;
     private Camera _camera;
     private float mFingerSpacing;
-    private int _exceptionCounter;
     private final Object _cameraInstanceLock;
+    // MotionEvent parameters
+    long downTime = SystemClock.uptimeMillis();
+    long eventTime = SystemClock.uptimeMillis();
+    int action = MotionEvent.ACTION_UP;
+    int x = 25;
+    int y = 25;
+    int metaState = 0;
+    MotionEvent mEvent = MotionEvent.obtain(downTime, eventTime, action, x, y, metaState);
+
 
     // concurrency lock for barcode scanner to avoid flooding the runtime
     public static volatile boolean barcodeScannerTaskLock = false;
@@ -56,7 +64,6 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         this.setSurfaceTextureListener(this);
         this._cameraType = type;
         this._cameraInstanceLock = new Object();
-        this._exceptionCounter = 0;
         this.initBarcodeReader(RCTCamera.getInstance().getBarCodeTypes());
     }
 
@@ -65,6 +72,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         _surfaceTexture = surface;
         _surfaceTextureWidth = width;
         _surfaceTextureHeight = height;
+        surface.dispatchEvent(mEvent);
         startCamera();
     }
 
@@ -378,14 +386,8 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
 
     private boolean cameraAvailable() {
         if (_camera != null) {
-           try {
-            throw new NullPointerException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
-            } catch (Exception e) {
-            throw new NullPointerException("java.lang.NullPointerException: Attempt to invoke virtual method 'android.hardware.Camera$Parameters android.hardware.Camera.getParameters()' on a null object reference");
-            } finally {
                return true;
-        	}
-	}
+	     }
 
         return waitForCamera();
     }
@@ -398,7 +400,7 @@ class RCTCameraViewFinder extends TextureView implements TextureView.SurfaceText
         return false;
     }
 
-    public boolean handleTouchEvent(MotionEvent event) {
+    private boolean handleTouchEvent(MotionEvent event) {
         // Get the pointer ID
         Camera.Parameters params = _camera.getParameters();
         int action = event.getAction();
